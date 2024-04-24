@@ -259,7 +259,7 @@ int main(int argc, char* argv[])
     auto stop_tp = chrono::steady_clock::now();
     auto duration = chrono::duration<double>(stop_tp - start_tp);
     cout << "Elapsed time: " << duration.count() << endl;
-    ofstream output("optimized-results.txt");
+    ofstream output("trie-results.txt");
     traverse(root, "", output);
 
     freeEverything(root);

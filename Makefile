@@ -1,6 +1,6 @@
 All:
-	g++ -g Trie.cpp -o submissiom -Wall -Wextra -pedantic
+	g++ -g Trie.cpp -o submission -Wall -Wextra -pedantic
 
 clean:
 	rm -f submission
-	rm -f optimized-results.txt
+	rm -f trie-results.txt

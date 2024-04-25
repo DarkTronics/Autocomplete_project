@@ -1,3 +1,6 @@
 hi 1
 hello 2
 howdy 3
+heehee 10
+hurray 5
+huh 20

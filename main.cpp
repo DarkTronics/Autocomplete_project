@@ -22,6 +22,7 @@ int main() {
     
     char p[20] = "h";
     trie.search(p);
+    trie.suggest(p);
 
     return 0;
 }

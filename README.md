@@ -1,6 +1,8 @@
 # Cross-project-cs375
 Cross project cs375 Xinwei, Andrew, Daniel
 
+A basic implementation of auto-complete using a k-ary tree (Trie). 
+
 Priority logic:
 - Each node stores its own key and the index of its highest-key ("favorite") child
 - Insertion procedure, traversing letters in the input string:
@@ -9,5 +11,6 @@ Priority logic:
     - Before moving to the next letter, increment the key. This way, the children have higher keys (which we can check for), preventing us from getting stuck at an irrelevant parent when searching for a suggestion.
 
 TODO: 
-- find a better input list with less fake words
+- maybe find a better input list with less fake words
+    - got mine from: https://martinweisser.org/corpora_site/word_lists.html
 - maybe a GUI or something

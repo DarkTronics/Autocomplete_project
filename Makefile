@@ -6,7 +6,7 @@ CC = g++
 OBJ = obj
 EXE = trie_test
 
-all:
+all: test
 
 test: $(EXE)
 	./$(EXE) < input3.txt > output.txt

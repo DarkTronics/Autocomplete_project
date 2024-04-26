@@ -14,7 +14,7 @@ void Trie::insert(const string &word, int num)
 {
     Node *temp = head;
     int it = 0;
-    while(word[it] >= 'a' && word[it] <= 'z')
+    while(word[it] != '\0')
     {
         const auto &next = temp->children.find(word[it]);
         Node *node;
@@ -34,7 +34,7 @@ void Trie::insert(const string &word, int num)
         }
         
         if (num > temp->key) temp->key = num;
-        num++;
+        num++; // increment to indicate more successful children
         it++;
     }
     temp->isWord = true;
@@ -43,7 +43,7 @@ void Trie::insert(const string &word, int num)
 void Trie::suggest(char pref[20]) {
     Node *temp = head;
     int it = 0;
-    while(pref[it] >= 'a' && pref[it] <= 'z')
+    while(pref[it] != '\0')
     {
         const auto &next = temp->children.find(pref[it]);
         if(next == temp->children.end()) return;
@@ -57,7 +57,7 @@ void Trie::suggest(char pref[20]) {
 void Trie::search(char pref[20]) {
     Node *temp = head;
     int it = 0;
-    while(pref[it] >= 'a' && pref[it] <= 'z')
+    while(pref[it] != '\0')
     {
         const auto &next = temp->children.find(pref[it]);
         if(next == temp->children.end()) return;

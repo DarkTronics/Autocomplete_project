@@ -16,23 +16,21 @@ void Trie::insert(const string &word, int num)
     int it = 0;
     while(word[it] >= 'a' && word[it] <= 'z')
     {
-        const auto &next = temp->children.find(word[it]);
-        Node *node;
+        int letter_index = word[it] - 'a';
+        Node *next = temp->children[letter_index];
 
         if (temp->favorite == -1 || num > temp->children[temp->favorite]->key) 
         {
-            temp->favorite = word[it];
+            temp->favorite = letter_index;
         }
         
-        if(next == temp->children.end())
+        if(!next)
         {
-            node = new Node();
-            temp->children[word[it]] = node;
-            temp = node;
-        } else {
-            temp = next->second;
+            next = new Node();
+            temp->children[letter_index] = next;
         }
-        
+
+        temp = next;
         if (num > temp->key) temp->key = num;
         it++;
     }
@@ -44,9 +42,9 @@ void Trie::suggest(char pref[20]) {
     int it = 0;
     while(pref[it] >= 'a' && pref[it] <= 'z')
     {
-        const auto &next = temp->children.find(pref[it]);
-        if(next == temp->children.end()) return;
-        temp = next->second;
+        Node *next = temp->children[pref[it]-'a'];
+        if(!next) return;
+        temp = next;
         it++;
     }
     favorite(temp, pref);
@@ -58,9 +56,9 @@ void Trie::search(char pref[20]) {
     int it = 0;
     while(pref[it] >= 'a' && pref[it] <= 'z')
     {
-        const auto &next = temp->children.find(pref[it]);
-        if(next == temp->children.end()) return;
-        temp = next->second;
+        Node *next = temp->children[pref[it]-'a'];
+        if(!next) return;
+        temp = next;
         it++;
     }
     traverse(temp, pref);
@@ -71,7 +69,7 @@ void Trie::favorite(Node* node, string prefix) {
     char f = node->favorite;
     if (f != -1) 
     {
-        favorite(node->children[f], prefix + char(f));
+        favorite(node->children[f], prefix + char(f + 'a'));
     }
 }
 
@@ -79,15 +77,24 @@ void Trie::traverse(Node* node, string prefix)
 {
     //if(node->isWord) 
     cout << "\"" << prefix << "\" " << node->key << endl;
-    for (const auto &it : node->children) {
-        traverse(node->children[it.first], prefix + char(it.first));
+    for(int i = 0; i < 26; i++)
+    {
+        if(node->children[i])
+        {
+            traverse(node->children[i], prefix + char(i + 'a'));
+        }
     }
 }
 
 void Trie::freeEverything(Node* node)
 {
-    for (const auto &it : node->children) {
-        freeEverything(node->children[it.first]);
+    int i;
+    for(i = 0; i < 26; i++)
+    {
+       if(node->children[i] != nullptr)
+       {
+        freeEverything(node->children[i]);
+       }
     }
     delete node;
 }

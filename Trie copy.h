@@ -19,7 +19,12 @@ private:
         int key = -1;
         bool isWord = false;
         char favorite = -1; // index of the child with the highest key
-        unordered_map<char, Node*> children;
+        Node* children[26];
+        Node() {
+            for (int i = 0; i < 26; i++) {
+                children[i] = nullptr;
+            }
+        }
     };
 
     Node *head;

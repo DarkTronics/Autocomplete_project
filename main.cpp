@@ -20,7 +20,7 @@ int main() {
     end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> tree_build_time = end - start;
     
-    char query[20] = "hur";
+    char query[20] = "sto";
     char lines[32] = "+============================+\n";
 
   
@@ -42,5 +42,30 @@ int main() {
     cout << "SUGGEST TIME:     " << suggest_time.count() << " ms" << endl;
     cout << "TRAVERSAL TIME:   " << traversal_time.count() << " ms" << endl << lines;
 
+    return 0;
+    
+    /*
+    std::string word;
+    int frequency;
+
+    // Ignore the header line
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    // Read and output only the desired columns
+    while (std::cin >> frequency) {
+        // Skip other columns until we reach the frequency
+        
+        // Read the frequency
+        std::cin >> word;
+
+        for (int i = 0; i < 2; ++i) {
+            std::string temp;
+            std::cin >> temp;
+        }
+
+        // Output word and frequency
+        std::cout << word << " " << frequency << std::endl;
+    }
+    */
     return 0;
 }

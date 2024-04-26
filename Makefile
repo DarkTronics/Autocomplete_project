@@ -9,7 +9,7 @@ EXE = trie_test
 all:
 
 test: $(EXE)
-	./$(EXE) < input.txt > output.txt
+	./$(EXE) < input3.txt > output.txt
 
 $(EXE): $(OBJ)/Trie.o $(OBJ)/main.o 
 	$(CC) $(FLAGS) $(OBJ)/main.o $(OBJ)/Trie.o -o $@

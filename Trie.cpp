@@ -34,6 +34,7 @@ void Trie::insert(const string &word, int num)
         }
         
         if (num > temp->key) temp->key = num;
+        num++;
         it++;
     }
     temp->isWord = true;
@@ -67,8 +68,13 @@ void Trie::search(char pref[20]) {
 }
 
 void Trie::favorite(Node* node, string prefix) {
-    if(node->isWord) cout << "\"" << prefix << "\" " << node->key << endl;
+    
     char f = node->favorite;
+    // we stop if node is a word AND is either a leaf or has no children with higher keys
+    if (node->isWord && (f == -1 || node->key >= node->children[f]->key)) {
+        cout << "\"" << prefix << "\" " << node->key << endl;
+        return;
+    }
     if (f != -1) 
     {
         favorite(node->children[f], prefix + char(f));

@@ -4,3 +4,9 @@ howdy 3
 heehee 10
 hurray 5
 huh 20
+hurricane 8
+hurt 10
+hunter 15
+hurl 9
+hurdle 1
+hurrying 7

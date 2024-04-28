@@ -30,7 +30,7 @@ int main() {
     end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> tree_build_time = end - start;
     
-    char query[20] = "APPL";
+    char query[20] = "mh";
     char lines[32] = "+============================+\n";
 
     cout << lines << "QUERY: " << query << endl;

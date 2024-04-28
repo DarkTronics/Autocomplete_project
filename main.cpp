@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <chrono>
 #include "Trie.h"
 
@@ -15,26 +16,29 @@ char *toLower(char s[20]) {
 }
 
 int main() {
-    
     std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
     start = std::chrono::high_resolution_clock::now();
-    
+    //fills in Trie form input file
+    std::ifstream myfile; myfile.open("input3.txt");
     Trie trie;
-    while (!cin.eof()) {
+    while (!myfile.eof()) {
         string s;
         int i;
-        cin >> s >> i;
+        myfile >> s >> i;
         trie.insert(s, i);
     }
-    
+    myfile.close();
     end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> tree_build_time = end - start;
-    
-    char query[20] = "mh";
+    char query[20];
+    cout << "Input QUERY: ";
+    cin >> query;
     char lines[32] = "+============================+\n";
+    //opens output file and redirects it to cout
+    ofstream fileOut("output.txt");
+    cout.rdbuf(fileOut.rdbuf()); 
 
     cout << lines << "QUERY: " << query << endl;
-
     cout << lines << "TOP SUGGESTION:" << endl;
     start = std::chrono::high_resolution_clock::now();
     trie.suggest(toLower(query));

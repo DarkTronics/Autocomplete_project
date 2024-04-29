@@ -83,11 +83,28 @@ void Trie::favorite(Node* node, string prefix) {
 
 void Trie::traverse(Node* node, string prefix)
 {
-    //if(node->isWord) 
+    if(node->isWord){
+        if(top5suggestions.size() < 5){
+            top5suggestions.push(make_pair(prefix, node->key));
+        }
+        else if(top5suggestions.top().second < node->key){
+            top5suggestions.pop();
+            top5suggestions.push(make_pair(prefix, node->key));
+        }
+    }
     cout << "\"" << prefix << "\" " << node->key << endl;
     for (const auto &it : node->children) {
         traverse(node->children[it.first], prefix + char(it.first));
     }
+}
+
+void Trie::print_top5(){
+    while(!top5suggestions.empty()){
+        pair<string, int> temp = top5suggestions.top();
+        cout << "\"" << temp.first << "\" " << temp.second << " ";
+        top5suggestions.pop();
+    }
+    cout << endl;
 }
 
 void Trie::freeEverything(Node* node)

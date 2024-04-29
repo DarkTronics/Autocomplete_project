@@ -50,6 +50,9 @@ int main() {
     trie.search(toLower(query));
     end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> traversal_time = end - start;
+
+    cout << lines << "TOP 5 SUGGESTIONS:" << endl;
+    trie.print_top5();
     
     cout << lines;
     cout << "TREE BUILD TIME:  " << tree_build_time.count() << " ms" << endl;

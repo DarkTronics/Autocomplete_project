@@ -36,7 +36,7 @@ void Trie::insert(const string &word, int num)
         
         i++;
     }
-    temp->key = temp->isWord ? temp->key : num; // handle duplicates: this assumes first word added is highest priority
+    temp->key = num > temp->key ? num : temp->key;
     temp->isWord = true;
 }
 

@@ -77,12 +77,7 @@ void Trie::topN(char pref[20], unsigned int n) {
         it++;
     }
     traverse(temp, pref, n, false);
-    while(!top5suggestions.empty()){
-        pair<int, string> temp = top5suggestions.top();
-        cout << "\"" << temp.second << "\" " << temp.first << " ";
-        top5suggestions.pop();
-        cout << endl;
-    }
+    topNHelper();
 }
 
 void Trie::favorite(Node* node, string prefix) {
@@ -111,6 +106,16 @@ void Trie::traverse(Node* node, string prefix, unsigned int n, bool print)
     for (const auto &it : node->children) {
         traverse(node->children[it.first], prefix + char(it.first), n, print);
     }
+}
+
+void Trie::topNHelper() {
+    if (!top5suggestions.empty()) {
+        pair<int, string> temp = top5suggestions.top();
+        top5suggestions.pop();
+        topNHelper();
+        cout << "\"" << temp.second << "\" " << temp.first << " ";
+        cout << endl;
+    }  
 }
 
 void Trie::freeEverything(Node* node)

@@ -29,5 +29,6 @@ private:
     Node *head;
     void favorite(Node* node, string prefix);
     void traverse(Node *node, string prefix, unsigned int n, bool print);
+    void topNHelper();
     void freeEverything(Node *node);
 };

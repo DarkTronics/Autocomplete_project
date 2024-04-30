@@ -76,7 +76,6 @@ void Trie::topN(char pref[20], unsigned int n) {
         temp = next->second;
         it++;
     }
-    clearQueue();
     traverse(temp, pref, n, false);
     topNHelper();
 }
@@ -116,12 +115,6 @@ void Trie::topNHelper() {
         cout << "\"" << temp.second << "\" " << temp.first << " ";
         cout << endl;
     }  
-}
-
-void Trie::clearQueue() {
-    while (!topNsuggestions.empty()) {
-        topNsuggestions.pop();
-    }
 }
 
 void Trie::freeEverything(Node* node)

@@ -31,6 +31,5 @@ private:
     void favorite(Node* node, string prefix);
     void traverse(Node *node, string prefix, unsigned int n, bool print);
     void topNHelper();
-    void clearQueue();
     void freeEverything(Node *node);
 };

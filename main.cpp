@@ -19,7 +19,7 @@ int main() {
     std::chrono::time_point<std::chrono::high_resolution_clock> start, end;
     start = std::chrono::high_resolution_clock::now();
     //fills in Trie form input file
-    std::ifstream myfile; myfile.open("input3.txt");
+    std::ifstream myfile; myfile.open("input2.txt");
     Trie trie;
     while (!myfile.eof()) {
         string s;

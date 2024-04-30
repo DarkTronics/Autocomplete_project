@@ -87,7 +87,7 @@ void Trie::favorite(Node* node, string prefix) {
         cout << "\"" << prefix << "\" " << node->key << endl;
         return;
     }
-    if (f != -1) favorite(node->children[f], prefix + char(f));
+    if (node->favorite != -1) favorite(node->children[f], prefix + char(f));
 }
 
 void Trie::traverse(Node* node, string prefix, unsigned int n, bool print)

@@ -21,9 +21,9 @@ int main() {
     //fills in Trie form input file
     std::ifstream myfile; myfile.open("input2.txt");
     Trie trie;
+    string s;
+    int i;
     while (!myfile.eof()) {
-        string s;
-        int i;
         myfile >> s >> i;
         trie.insert(s, i);
     }
@@ -70,7 +70,32 @@ int main() {
 
     return 0;
     
-    /*
+}
+/*
+// to get rid of duplicates
+#include <unordered_set>
+int main() {
+    std::ifstream myfile; myfile.open("input2.txt");
+    unordered_set<string> set;
+    string s;
+    int i;
+    ofstream fileOut("input1.txt");
+    cout.rdbuf(fileOut.rdbuf()); 
+    int num_omitted = 0;
+    while (!myfile.eof()) {
+        
+        myfile >> s >> i;
+        if (set.find(s) == set.end()) {
+            
+            set.insert(s);
+        } else {
+            cout << s << " " << i << endl;
+            num_omitted++;
+        }
+    }
+    cout << num_omitted;
+    myfile.close();
+
     // this is code to parse the dictionary i downloaded from the internet
     // https://martinweisser.org/corpora_site/word_lists.html
     std::string word;
@@ -94,6 +119,7 @@ int main() {
         // Output word and frequency
         std::cout << word << " " << frequency << std::endl;
     }
-    */
+    
     return 0;
 }
+*/

@@ -13,30 +13,30 @@ Trie::~Trie() {
 void Trie::insert(const string &word, int num)
 {
     Node *temp = head;
-    int it = 0;
-    while(word[it] != '\0')
+    int i = 0;
+    while(word[i] != '\0')
     {
-        const auto &next = temp->children.find(word[it]);
+        const auto &next = temp->children.find(word[i]);
         Node *node;
 
-        if (temp->favorite == -1 || num > temp->children[temp->favorite]->key) 
+        if (temp->favorite == -1 || num > temp->favoritekey) 
         {
-            temp->favorite = word[it];
+            temp->favorite = word[i];
+            temp->favoritekey = num;
         }
         
         if(next == temp->children.end())
         {
             node = new Node();
-            temp->children[word[it]] = node;
+            temp->children[word[i]] = node;
             temp = node;
         } else {
             temp = next->second;
         }
         
-        if (num > temp->key) temp->key = num;
-        num++; // increment to indicate more successful children
-        it++;
+        i++;
     }
+    temp->key = temp->isWord ? temp->key : num; // handle duplicates: this assumes first word added is highest priority
     temp->isWord = true;
 }
 
@@ -83,7 +83,7 @@ void Trie::topN(char pref[20], unsigned int n) {
 void Trie::favorite(Node* node, string prefix) {
     
     char f = node->favorite;
-    if (node->isWord && (f == -1 || node->key >= node->children[f]->key)) {
+    if (node->isWord && (f == -1 || node->key >= node->favoritekey)) {
         cout << "\"" << prefix << "\" " << node->key << endl;
         return;
     }
@@ -95,12 +95,12 @@ void Trie::traverse(Node* node, string prefix, unsigned int n, bool print)
     if (print) cout << endl << "\"" << prefix << "\" " << node->key;
     if(node->isWord){
         if (print) cout << " <--- WORD";
-        if(top5suggestions.size() < n){
-            top5suggestions.push(make_pair(node->key, prefix));
+        if(topNsuggestions.size() < n){
+            topNsuggestions.push(make_pair(node->key, prefix));
         }
-        else if(top5suggestions.top().first < node->key){
-            top5suggestions.pop();
-            top5suggestions.push(make_pair(node->key, prefix));
+        else if(topNsuggestions.top().first < node->key){
+            topNsuggestions.pop();
+            topNsuggestions.push(make_pair(node->key, prefix));
         }
     }
     for (const auto &it : node->children) {
@@ -109,9 +109,9 @@ void Trie::traverse(Node* node, string prefix, unsigned int n, bool print)
 }
 
 void Trie::topNHelper() {
-    if (!top5suggestions.empty()) {
-        pair<int, string> temp = top5suggestions.top();
-        top5suggestions.pop();
+    if (!topNsuggestions.empty()) {
+        pair<int, string> temp = topNsuggestions.top();
+        topNsuggestions.pop();
         topNHelper();
         cout << "\"" << temp.second << "\" " << temp.first << " ";
         cout << endl;

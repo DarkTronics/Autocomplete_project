@@ -22,10 +22,11 @@ private:
         int key = -1;
         bool isWord = false;
         char favorite = -1; // index of the child with the highest key
+        int favoritekey = -1;
         unordered_map<char, Node*> children;
     };
-    priority_queue<result,vector<result>,greater<result>> top5suggestions;
-    // priority_queue<pair<string, int>> traversalQueue;
+
+    priority_queue<result,vector<result>,greater<result>> topNsuggestions;
     Node *head;
     void favorite(Node* node, string prefix);
     void traverse(Node *node, string prefix, unsigned int n, bool print);

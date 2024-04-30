@@ -30,10 +30,14 @@ int main() {
     myfile.close();
     end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> tree_build_time = end - start;
+
     char query[20];
+    int num_suggestions;
     cout << "Input QUERY: ";
     cin >> query;
-    char lines[32] = "+============================+\n";
+    cout << "Number of suggestions: ";
+    cin >> num_suggestions;
+    char lines[35] = "+===============================+\n";
     //opens output file and redirects it to cout
     ofstream fileOut("output.txt");
     cout.rdbuf(fileOut.rdbuf()); 
@@ -45,19 +49,24 @@ int main() {
     end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> suggest_time = end - start;
 
-    cout << lines << "FULL TRAVERSAL:" << endl;
+    cout << lines << "TOP " << num_suggestions << " SUGGESTIONS:" << endl;
+    start = std::chrono::high_resolution_clock::now();
+    trie.topN(toLower(query), num_suggestions);
+    end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> topN_time = end - start;
+
+    cout << lines << "FULL TRAVERSAL:";
     start = std::chrono::high_resolution_clock::now();
     trie.search(toLower(query));
     end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> traversal_time = end - start;
 
-    cout << lines << "TOP 5 SUGGESTIONS:" << endl;
-    trie.print_top5();
     
-    cout << lines;
-    cout << "TREE BUILD TIME:  " << tree_build_time.count() << " ms" << endl;
-    cout << "SUGGEST TIME:     " << suggest_time.count() << " ms" << endl;
-    cout << "TRAVERSAL TIME:   " << traversal_time.count() << " ms" << endl << lines;
+    cout << endl << lines;
+    cout << "TREE BUILD TIME:      " << tree_build_time.count() << " ms" << endl;
+    cout << "SUGGEST ONE TIME:     " << suggest_time.count() << " ms" << endl;
+    cout << "SUGGEST N TIME:       " << topN_time.count() << " ms" << endl;
+    cout << "TRAVERSAL TIME:       " << traversal_time.count() << " ms" << endl << lines;
 
     return 0;
     

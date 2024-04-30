@@ -53,7 +53,6 @@ void Trie::suggest(char pref[20]) {
     favorite(temp, pref);
 }
 
-// eventually this should just output the TOP word, not all in traversal
 void Trie::search(char pref[20]) {
     Node *temp = head;
     int it = 0;
@@ -64,47 +63,54 @@ void Trie::search(char pref[20]) {
         temp = next->second;
         it++;
     }
-    traverse(temp, pref);
+    traverse(temp, pref, 1, true);
+}
+
+void Trie::topN(char pref[20], unsigned int n) {
+    Node *temp = head;
+    int it = 0;
+    while(pref[it] != '\0')
+    {
+        const auto &next = temp->children.find(pref[it]);
+        if(next == temp->children.end()) return;
+        temp = next->second;
+        it++;
+    }
+    traverse(temp, pref, n, false);
+    while(!top5suggestions.empty()){
+        pair<int, string> temp = top5suggestions.top();
+        cout << "\"" << temp.second << "\" " << temp.first << " ";
+        top5suggestions.pop();
+        cout << endl;
+    }
 }
 
 void Trie::favorite(Node* node, string prefix) {
     
     char f = node->favorite;
-    // we stop if node is a word AND is either a leaf or has no children with higher keys
     if (node->isWord && (f == -1 || node->key >= node->children[f]->key)) {
         cout << "\"" << prefix << "\" " << node->key << endl;
         return;
     }
-    if (f != -1) 
-    {
-        favorite(node->children[f], prefix + char(f));
-    }
+    if (f != -1) favorite(node->children[f], prefix + char(f));
 }
 
-void Trie::traverse(Node* node, string prefix)
+void Trie::traverse(Node* node, string prefix, unsigned int n, bool print)
 {
+    if (print) cout << endl << "\"" << prefix << "\" " << node->key;
     if(node->isWord){
-        if(top5suggestions.size() < 5){
-            top5suggestions.push(make_pair(prefix, node->key));
+        if (print) cout << " <--- WORD";
+        if(top5suggestions.size() < n){
+            top5suggestions.push(make_pair(node->key, prefix));
         }
-        else if(top5suggestions.top().second < node->key){
+        else if(top5suggestions.top().first < node->key){
             top5suggestions.pop();
-            top5suggestions.push(make_pair(prefix, node->key));
+            top5suggestions.push(make_pair(node->key, prefix));
         }
     }
-    cout << "\"" << prefix << "\" " << node->key << endl;
     for (const auto &it : node->children) {
-        traverse(node->children[it.first], prefix + char(it.first));
+        traverse(node->children[it.first], prefix + char(it.first), n, print);
     }
-}
-
-void Trie::print_top5(){
-    while(!top5suggestions.empty()){
-        pair<string, int> temp = top5suggestions.top();
-        cout << "\"" << temp.first << "\" " << temp.second << " ";
-        top5suggestions.pop();
-    }
-    cout << endl;
 }
 
 void Trie::freeEverything(Node* node)

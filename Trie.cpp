@@ -92,10 +92,9 @@ void Trie::favorite(Node* node, string prefix) {
 }
 
 void Trie::traverse(Node* node, string prefix, unsigned int n, bool print)
-{
-    if (print) cout << endl << "\"" << prefix << "\" " << node->key;
+{   
     if(node->isWord){
-        if (print) cout << " <--- WORD";
+        if (print) cout << endl << "\"" << prefix << "\" " << node->key;
         if(topNsuggestions.size() < n){
             topNsuggestions.push(make_pair(node->key, prefix));
         }

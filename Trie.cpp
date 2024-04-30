@@ -36,7 +36,7 @@ void Trie::insert(const string &word, int num)
         
         i++;
     }
-    temp->key = num > temp->key ? num : temp->key;
+    temp->key = num > temp->key ? num : temp->key; // handle duplicates
     temp->isWord = true;
 }
 
@@ -76,14 +76,14 @@ void Trie::topN(char pref[20], unsigned int n) {
         temp = next->second;
         it++;
     }
+    clearQueue();
     traverse(temp, pref, n, false);
     topNHelper();
 }
 
 void Trie::favorite(Node* node, string prefix) {
     
-    char f = node->favorite;
-    if (node->isWord && (f == -1 || node->key >= node->favoritekey)) {
+    if (node->isWord && (node->favorite == -1 || node->key >= node->favoritekey)) {
         cout << "\"" << prefix << "\" " << node->key << endl;
         return;
     }
@@ -116,6 +116,12 @@ void Trie::topNHelper() {
         cout << "\"" << temp.second << "\" " << temp.first << " ";
         cout << endl;
     }  
+}
+
+void Trie::clearQueue() {
+    while (!topNsuggestions.empty()) {
+        topNsuggestions.pop();
+    }
 }
 
 void Trie::freeEverything(Node* node)

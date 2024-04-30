@@ -83,11 +83,12 @@ void Trie::topN(char pref[20], unsigned int n) {
 
 void Trie::favorite(Node* node, string prefix) {
     
-    if (node->isWord && (node->favorite == -1 || node->key >= node->favoritekey)) {
+    char f = node->favorite;
+    if (node->isWord && (f == -1 || node->key >= node->favoritekey)) {
         cout << "\"" << prefix << "\" " << node->key << endl;
         return;
     }
-    if (node->favorite != -1) favorite(node->children[f], prefix + char(f));
+    if (f != -1) favorite(node->children[f], prefix + char(f));
 }
 
 void Trie::traverse(Node* node, string prefix, unsigned int n, bool print)

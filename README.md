@@ -13,5 +13,5 @@ Priority logic:
 TODO: 
 - maybe find a better input list with less fake words
     - got mine from: https://martinweisser.org/corpora_site/word_lists.html
-- implement top 10 or top 5 suggestions
+- implement top 10 or top 5 suggestions - DONE
 - maybe a GUI or something

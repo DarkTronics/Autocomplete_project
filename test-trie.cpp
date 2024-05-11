@@ -31,13 +31,15 @@ int main() {
     end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> tree_build_time = end - start;
 
+    char lines[35] = "+===============================+\n";
     char query[20];
     int num_suggestions;
+    cout << endl << lines << "TRIE TEST" << endl << lines;
     cout << "Input QUERY: ";
     cin >> query;
     cout << "Number of suggestions: ";
     cin >> num_suggestions;
-    char lines[35] = "+===============================+\n";
+    
     //opens output file and redirects it to cout
     ofstream fileOut("output-trie.txt");
     cout.rdbuf(fileOut.rdbuf()); 

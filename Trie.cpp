@@ -40,19 +40,6 @@ void Trie::insert(const string &word, int num)
     temp->isWord = true;
 }
 
-void Trie::suggest(char pref[20]) {
-    Node *temp = head;
-    int it = 0;
-    while(pref[it] != '\0')
-    {
-        const auto &next = temp->children.find(pref[it]);
-        if(next == temp->children.end()) return;
-        temp = next->second;
-        it++;
-    }
-    favorite(temp, pref);
-}
-
 void Trie::search(char pref[20]) {
     Node *temp = head;
     int it = 0;
@@ -66,7 +53,20 @@ void Trie::search(char pref[20]) {
     traverse(temp, pref, 1, true);
 }
 
-void Trie::topN(char pref[20], unsigned int n) {
+void Trie::suggestTop(char pref[20]) {
+    Node *temp = head;
+    int it = 0;
+    while(pref[it] != '\0')
+    {
+        const auto &next = temp->children.find(pref[it]);
+        if(next == temp->children.end()) return;
+        temp = next->second;
+        it++;
+    }
+    favorite(temp, pref);
+}
+
+void Trie::suggestTopN(char pref[20], unsigned int n) {
     Node *temp = head;
     int it = 0;
     while(pref[it] != '\0')

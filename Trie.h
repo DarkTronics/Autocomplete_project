@@ -12,9 +12,9 @@ public:
     Trie();
     ~Trie();
     void insert(const string &word, int num);
-    void suggest(char word[20]);
     void search(char word[20]);
-    void topN(char pref[20], unsigned int n);
+    void suggestTop(char word[20]);
+    void suggestTopN(char pref[20], unsigned int n);
 
 private:
     struct Node

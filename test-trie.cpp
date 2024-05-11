@@ -39,19 +39,19 @@ int main() {
     cin >> num_suggestions;
     char lines[35] = "+===============================+\n";
     //opens output file and redirects it to cout
-    ofstream fileOut("output.txt");
+    ofstream fileOut("output-trie.txt");
     cout.rdbuf(fileOut.rdbuf()); 
 
     cout << lines << "QUERY: " << query << endl;
     cout << lines << "TOP SUGGESTION:" << endl;
     start = std::chrono::high_resolution_clock::now();
-    trie.suggest(toLower(query));
+    trie.suggestTop(toLower(query));
     end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> suggest_time = end - start;
 
     cout << lines << "TOP " << num_suggestions << " SUGGESTIONS:" << endl;
     start = std::chrono::high_resolution_clock::now();
-    trie.topN(toLower(query), num_suggestions);
+    trie.suggestTopN(toLower(query), num_suggestions);
     end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> topN_time = end - start;
 

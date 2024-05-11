@@ -59,7 +59,7 @@ void Trie::suggestTop(char pref[20]) {
     while(pref[it] != '\0')
     {
         const auto &next = temp->children.find(pref[it]);
-        if(next == temp->children.end()) return;
+        if (next == temp->children.end()) return;
         temp = next->second;
         it++;
     }

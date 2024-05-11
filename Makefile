@@ -5,17 +5,24 @@ FLAGS = -Wall -ggdb -Wextra -pedantic
 CC = g++
 OBJ = obj
 
-all: test-trie test-bktree
+all: test-trie test-bktree test-both
 
-test: test-bktree test-trie
+test: test-bktree test-trie test-both
 	./test-bktree
 	./test-trie
+	./test-both
+
+test-both: $(OBJ)/bk-tree.o $(OBJ)/Trie.o $(OBJ)/test-both.o 
+	$(CC) $(FLAGS) $(OBJ)/test-both.o $(OBJ)/bk-tree.o $(OBJ)/Trie.o -o $@
 
 test-bktree: $(OBJ)/bk-tree.o $(OBJ)/test-bktree.o 
 	$(CC) $(FLAGS) $(OBJ)/test-bktree.o $(OBJ)/bk-tree.o -o $@
 
 test-trie: $(OBJ)/Trie.o $(OBJ)/test-trie.o 
 	$(CC) $(FLAGS) $(OBJ)/test-trie.o $(OBJ)/Trie.o -o $@
+
+$(OBJ)/test-both.o: test-both.cpp bk-tree.h Trie.h
+	$(CC) $(FLAGS) -c test-both.cpp -o $@
 
 $(OBJ)/bk-tree.o: bk-tree.cpp bk-tree.h
 	$(CC) $(FLAGS) -c bk-tree.cpp -o $@
@@ -34,6 +41,6 @@ tar: clean
 	gzip $(TARFILE)
 
 clean:
-	rm -f test-bktree test-trie
+	rm -f test-bktree test-trie test-both
 	rm -f $(OBJ)/*.o
-	rm -f output-bktree.txt output-trie.txt
+	rm -f output-bktree.txt output-trie.txt output-both.txt

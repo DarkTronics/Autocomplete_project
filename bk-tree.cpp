@@ -39,8 +39,9 @@ void BKTree::insert(const string &word, int key) {
     }
 }
 
-void BKTree::suggestTop(const string &word, int max_distance) {
+string BKTree::suggestTop(const string &word, int max_distance) {
     suggestTopN(word, max_distance, 1);
+    return top;
 }
 
 void BKTree::suggestTopN(const string &word, int max_distance, int num_suggestions) {
@@ -88,7 +89,10 @@ void BKTree::printNSuggestions(priority_queue<result,vector<result>,greater<resu
         suggestions->pop();
         printNSuggestions(suggestions, num_to_print);
         num_to_print--;
-        if (num_to_print >= 0) cout << temp.second << " " << temp.first << endl;
+        if (num_to_print >= 0) {
+            cout << "\"" << temp.second << "\"" << " " << temp.first << endl;
+            top = temp.second;
+        }
     }
 }
 

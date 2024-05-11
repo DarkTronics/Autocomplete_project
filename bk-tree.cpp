@@ -10,33 +10,22 @@ BKTree::~BKTree() {
 
 void BKTree::insert(const string &word, int key) {
     if (root == nullptr) {
-        root = new BKTreeNode(word, key, -1);
+        root = new BKTreeNode(word, key);
         return;
     }
     
     BKTreeNode* currNode = root;
-    BKTreeNode* child;
-    BKTreeNode* newChild;
-    int dist;
+    int dist; 
+
     while (1) {
         dist = levenshteinDistance(currNode->word, word);
-        if (!dist)
-            return;
-        child = currNode->leftChild;
-        while (child) {
-            if (child->dist == dist) {
-                currNode = child;
-                break;
-            }
-            child = child->rightSibling;
-        }
-        if (!child) {
-            newChild = new BKTreeNode(word, key, dist);
-            newChild->rightSibling = currNode->leftChild;
-            currNode->leftChild = newChild;
-            break;
-        }
+        if (!dist) return;
+        const auto &next = currNode->children.find(dist);
+        if (next == currNode->children.end()) break;
+        currNode = next->second;
+        //if (currNode->dist == dist) break;
     }
+    currNode->children[dist] = new BKTreeNode(word, key);
 }
 
 string BKTree::suggestTop(const string &word, int max_distance) {
@@ -52,8 +41,11 @@ void BKTree::suggestTopN(const string &word, int max_distance, unsigned int num_
     int num_to_print = num_suggestions;
     for (int i = 0; i <= max_distance; i++) printNSuggestions(suggestions[i], num_to_print);
 }
+
 int n = 0;
 void BKTree::suggestHelper(BKTreeNode* currNode, vector<priority_queue<result,vector<result>,greater<result>>*>& suggestions, unsigned int num_suggestions, const string &word, int max_distance) {
+    //if (!currNode) return;
+    
     int curr_distance = levenshteinDistance(currNode->word, word);
     int lower_limit = curr_distance - max_distance;
     int upper_limit = curr_distance + max_distance;
@@ -66,15 +58,10 @@ void BKTree::suggestHelper(BKTreeNode* currNode, vector<priority_queue<result,ve
             suggestions[curr_distance]->push(make_pair(currNode->key, currNode->word));
         }
     }
-    
-    BKTreeNode* child = currNode->leftChild;
-    if (!child) return;
-    
-    while (child) {
-        if (lower_limit <= child->dist && child->dist <= upper_limit)
-            suggestHelper(child, suggestions, num_suggestions, word, max_distance);
-        
-        child = child->rightSibling;
+
+    for (const auto &it : currNode->children) {
+        if (lower_limit <= it.first && it.first <= upper_limit && currNode->children.find(it.first) != currNode->children.end())
+        suggestHelper(currNode->children[it.first], suggestions, num_suggestions, word, max_distance);
     }
     
 }
@@ -122,9 +109,9 @@ int BKTree::min(int a, int b, int c) {
 }
 
 void BKTree::freeEverything(BKTreeNode* node) {
-    if (node) {
-        freeEverything(node->leftChild);
-        freeEverything(node->rightSibling);
-        if (node) delete node;
-    }  
+    if (!node) return;
+    for (const auto &it : node->children) {
+        freeEverything(node->children[it.first]);
+    }
+    delete node; 
 }

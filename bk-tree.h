@@ -6,6 +6,7 @@
 #include <queue>
 #include <string>
 #include <vector>
+#include <unordered_map>
 
 using namespace std;
 typedef pair<int, string> result;
@@ -24,10 +25,8 @@ private:
     {
         string word;
         int key;
-        int dist;
-        BKTreeNode* leftChild = nullptr;
-        BKTreeNode* rightSibling = nullptr;
-        BKTreeNode(std::string _word, int _key, int _dist) : word(_word), key(_key), dist(_dist) {}
+        unordered_map<int, BKTreeNode *> children;
+        BKTreeNode(std::string _word, int _key) : word(_word), key(_key) {}
     };
 
     BKTreeNode* root;

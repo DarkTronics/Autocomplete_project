@@ -44,7 +44,7 @@ string BKTree::suggestTop(const string &word, int max_distance) {
     return top;
 }
 
-void BKTree::suggestTopN(const string &word, int max_distance, int num_suggestions) {
+void BKTree::suggestTopN(const string &word, int max_distance, unsigned int num_suggestions) {
     vector<priority_queue<result,vector<result>,greater<result>>*> suggestions;
     for (int i = 0; i <= max_distance; i++) suggestions.push_back(new priority_queue<result,vector<result>,greater<result>>());
     
@@ -52,18 +52,16 @@ void BKTree::suggestTopN(const string &word, int max_distance, int num_suggestio
     int num_to_print = num_suggestions;
     for (int i = 0; i <= max_distance; i++) printNSuggestions(suggestions[i], num_to_print);
 }
-
-void BKTree::suggestHelper(BKTreeNode* currNode, vector<priority_queue<result,vector<result>,greater<result>>*>& suggestions, int num_suggestions, const string &word, int max_distance) {
+int n = 0;
+void BKTree::suggestHelper(BKTreeNode* currNode, vector<priority_queue<result,vector<result>,greater<result>>*>& suggestions, unsigned int num_suggestions, const string &word, int max_distance) {
     int curr_distance = levenshteinDistance(currNode->word, word);
     int lower_limit = curr_distance - max_distance;
     int upper_limit = curr_distance + max_distance;
-
-    curr_distance;
+    n++;
     if (curr_distance <= max_distance) {
         if (suggestions[curr_distance]->size() < num_suggestions) {
             suggestions[curr_distance]->push(make_pair(currNode->key, currNode->word));
         } else if (suggestions[curr_distance]->top().first < currNode->key) {
-            //cout << currNode->word << " " << currNode->key << " " << suggestions[curr_distance]->top().first << endl;
             suggestions[curr_distance]->pop();
             suggestions[curr_distance]->push(make_pair(currNode->key, currNode->word));
         }
@@ -92,6 +90,7 @@ void BKTree::printNSuggestions(priority_queue<result,vector<result>,greater<resu
         if (num_to_print >= 0) {
             cout << "\"" << temp.second << "\"" << " " << temp.first << endl;
             top = temp.second;
+            cout << n << " nodes visited" << endl;
         }
     }
 }
@@ -106,9 +105,9 @@ int BKTree::levenshteinDistance(const string &word1, const string &word2) {
     int cost;
     
     int d[n_word1 + 1][n_word2 + 1];
-    
     for (int i = 0; i <= n_word1; i++) d[i][0] = i;
     for (int i = 0; i <= n_word2; i++) d[0][i] = i;
+
     for (int i = 1; i <= n_word1; i++) {
         for (int j = 1; j <= n_word2; j++) {
             cost = (word1[i - 1] == word2[j - 1]) ? 0 : 1;

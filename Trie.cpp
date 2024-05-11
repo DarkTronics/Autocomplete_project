@@ -19,10 +19,10 @@ void Trie::insert(const string &word, int num)
         const auto &next = temp->children.find(word[i]);
         Node *node;
 
-        if (temp->favorite == -1 || num > temp->favoritekey) 
+        if (temp->favorite == -1 || num > temp->favoritePriority) 
         {
             temp->favorite = word[i];
-            temp->favoritekey = num;
+            temp->favoritePriority = num;
         }
         
         if(next == temp->children.end())
@@ -36,7 +36,7 @@ void Trie::insert(const string &word, int num)
         
         i++;
     }
-    temp->key = num > temp->key ? num : temp->key; // handle duplicates
+    temp->priority = num > temp->priority ? num : temp->priority; // handle duplicates
     temp->isWord = true;
 }
 
@@ -83,8 +83,8 @@ void Trie::suggestTopN(char pref[20], unsigned int n) {
 void Trie::favorite(Node* node, string prefix) {
     
     char f = node->favorite;
-    if (node->isWord && (f == -1 || node->key >= node->favoritekey)) {
-        cout << "\"" << prefix << "\" " << node->key << endl;
+    if (node->isWord && (f == -1 || node->priority >= node->favoritePriority)) {
+        cout << "\"" << prefix << "\" " << node->priority << endl;
         return;
     }
     if (f != -1) favorite(node->children[f], prefix + char(f));
@@ -93,13 +93,13 @@ void Trie::favorite(Node* node, string prefix) {
 void Trie::traverse(Node* node, string prefix, unsigned int n, bool print)
 {   
     if(node->isWord){
-        if (print) cout << endl << "\"" << prefix << "\" " << node->key;
+        if (print) cout << endl << "\"" << prefix << "\" " << node->priority;
         if(topNsuggestions.size() < n){
-            topNsuggestions.push(make_pair(node->key, prefix));
+            topNsuggestions.push(make_pair(node->priority, prefix));
         }
-        else if(topNsuggestions.top().first < node->key){
+        else if(topNsuggestions.top().first < node->priority){
             topNsuggestions.pop();
-            topNsuggestions.push(make_pair(node->key, prefix));
+            topNsuggestions.push(make_pair(node->priority, prefix));
         }
     }
     for (const auto &it : node->children) {

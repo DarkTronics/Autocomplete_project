@@ -26,6 +26,7 @@ int main() {
     string s;
     int i;
     while (!myfile.eof()) {
+    //for (int j = 0; j < 10000; j++) {
         myfile >> s >> i;
         tree.insert(s, i);
         trie.insert(s, i);
@@ -45,9 +46,10 @@ int main() {
     cout.rdbuf(fileOut.rdbuf()); 
 
     cout << lines << "QUERY: " << query << endl;
-    cout << lines << "TOP SUGGESTION:" << endl;
+    cout << lines << "SUGGESTION:" << endl;
     start = std::chrono::high_resolution_clock::now();
-    trie.suggestTop(&(tree.suggestTop(toLower(query), 20))[0]);
+    char *corrected = &(tree.suggestTop(toLower(query), 5))[0]; cout << " ^ corrected" << endl;
+    trie.suggestTop(corrected); cout << " ^ completed";
     end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> suggest_time = end - start;
     

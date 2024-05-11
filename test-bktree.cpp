@@ -47,13 +47,13 @@ int main() {
     cout << lines << "QUERY: " << query << endl;
     cout << lines << "TOP SUGGESTION:" << endl;
     start = std::chrono::high_resolution_clock::now();
-    tree.suggestTop(toLower(query), 20);
+    tree.suggestTop(toLower(query), 5);
     end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> suggest_time = end - start;
 
     cout << lines << "TOP " << num_suggestions << " SUGGESTIONS:" << endl;
     start = std::chrono::high_resolution_clock::now();
-    tree.suggestTopN(toLower(query), 20, num_suggestions);
+    tree.suggestTopN(toLower(query), 5, num_suggestions);
     end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> topN_time = end - start;
 

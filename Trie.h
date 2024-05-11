@@ -19,10 +19,10 @@ public:
 private:
     struct Node
     {
-        int key = -1;
+        int priority = -1;
         bool isWord = false;
         char favorite = -1; // index of the child with the highest key
-        int favoritekey = -1;
+        int favoritePriority = -1;
         unordered_map<char, Node*> children;
     };
 

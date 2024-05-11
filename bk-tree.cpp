@@ -8,9 +8,9 @@ BKTree::~BKTree() {
     freeEverything(root); 
 }
 
-void BKTree::insert(const string &word, int key) {
+void BKTree::insert(const string &word, int priority) {
     if (root == nullptr) {
-        root = new BKTreeNode(word, key);
+        root = new BKTreeNode(word, priority);
         return;
     }
     
@@ -25,7 +25,7 @@ void BKTree::insert(const string &word, int key) {
         currNode = next->second;
         //if (currNode->dist == dist) break;
     }
-    currNode->children[dist] = new BKTreeNode(word, key);
+    currNode->children[dist] = new BKTreeNode(word, priority);
 }
 
 string BKTree::suggestTop(const string &word, int max_distance) {
@@ -37,13 +37,13 @@ void BKTree::suggestTopN(const string &word, int max_distance, unsigned int num_
     vector<priority_queue<result,vector<result>,greater<result>>*> suggestions;
     for (int i = 0; i <= max_distance; i++) suggestions.push_back(new priority_queue<result,vector<result>,greater<result>>());
     
-    suggestHelper(root, suggestions, num_suggestions, word, max_distance);
+    traverse(root, suggestions, num_suggestions, word, max_distance);
     int num_to_print = num_suggestions;
     for (int i = 0; i <= max_distance; i++) printNSuggestions(suggestions[i], num_to_print);
 }
 
 int n = 0;
-void BKTree::suggestHelper(BKTreeNode* currNode, vector<priority_queue<result,vector<result>,greater<result>>*>& suggestions, unsigned int num_suggestions, const string &word, int max_distance) {
+void BKTree::traverse(BKTreeNode* currNode, vector<priority_queue<result,vector<result>,greater<result>>*>& suggestions, unsigned int num_suggestions, const string &word, int max_distance) {
     //if (!currNode) return;
     
     int curr_distance = levenshteinDistance(currNode->word, word);
@@ -52,16 +52,16 @@ void BKTree::suggestHelper(BKTreeNode* currNode, vector<priority_queue<result,ve
     n++;
     if (curr_distance <= max_distance) {
         if (suggestions[curr_distance]->size() < num_suggestions) {
-            suggestions[curr_distance]->push(make_pair(currNode->key, currNode->word));
-        } else if (suggestions[curr_distance]->top().first < currNode->key) {
+            suggestions[curr_distance]->push(make_pair(currNode->priority, currNode->word));
+        } else if (suggestions[curr_distance]->top().first < currNode->priority) {
             suggestions[curr_distance]->pop();
-            suggestions[curr_distance]->push(make_pair(currNode->key, currNode->word));
+            suggestions[curr_distance]->push(make_pair(currNode->priority, currNode->word));
         }
     }
 
     for (const auto &it : currNode->children) {
         if (lower_limit <= it.first && it.first <= upper_limit && currNode->children.find(it.first) != currNode->children.end())
-        suggestHelper(currNode->children[it.first], suggestions, num_suggestions, word, max_distance);
+        traverse(currNode->children[it.first], suggestions, num_suggestions, word, max_distance);
     }
     
 }
